@@ -1,0 +1,56 @@
+# Framework Properties
+name: sample-framework
+label: Sample Framework
+version: 1.0.0-SNAPSHOT
+description: Spouts and Bolts implemented for demonstration purposes
+
+# Framework Components
+components: 
+  - name: line-reader-spout
+    label: Line reader spout
+    type: storm-spout
+    description: Returns lines readen from a file
+    mainClass: com.kersplody.sample_framework.spouts.LineReaderSpout
+    properties: 
+      - name: input-file
+        label: Input file
+        description: The input file for word counting
+        defaultValue:
+        required: true
+        type: text
+    outputs:
+      - key: default
+        description: Lines
+
+  - name: word-splitter-bolt
+    label: Word splitter bolt
+    type: storm-bolt
+    description: Splits input lines into words
+    mainClass: com.kersplody.sample_framework.bolts.WordSplitterBolt
+    inputs:
+      - key: default
+        description: Line
+    outputs:
+      - key: default
+        description: Words
+
+  - name: word-counter-bolt
+    label: Word counter bolt
+    type: storm-bolt
+    description: Counts the words
+    mainClass: com.kersplody.sample_framework.bolts.WordCounterBolt
+    inputs:
+      - key: default
+        description: Words
+    outputs:
+      - key: default
+        description: Words count
+
+  - name: printer-bolt
+    label: Printer bolt
+    type: storm-bolt
+    description: Prints the word count results
+    mainClass: com.kersplody.sample_framework.bolts.PrinterBolt
+    inputs:
+      - key: default
+        description: Words
